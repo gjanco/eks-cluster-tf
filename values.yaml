@@ -1,0 +1,36 @@
+opentelemetry-collector:
+  mode: "daemonset"
+  presets:
+    kubernetesAttributes:
+      enabled: true
+    logsCollection:
+      enabled: true
+
+  config:
+    processors:
+      resourcedetection:
+        detectors:
+          - azure
+          - env
+          - eks
+          - ec2
+          - lambda
+          - aks
+          - system
+        override: true
+        timeout: 10s
+
+    exporters:
+      otlphttp/mezmologs:
+        endpoint: "https://pipeline.use.dev.logdna.net/v1/<ROUTE_ID>"
+        headers:
+          Authorization: "<KEY>"
+
+    service:
+      pipelines:
+        logs:
+          processors:
+          - resourcedetection
+          exporters:
+            - otlphttp/mezmologs
+            - logging
