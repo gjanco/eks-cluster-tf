@@ -1,0 +1,40 @@
+opentelemetry-collector:
+  presets:
+    kubernetesAttributes:
+      enabled: true
+    logsCollection:
+      enabled: true
+
+  config:
+    processors:
+      resourcedetection:
+        detectors:
+          - azure
+          - env
+          - eks
+          - ec2
+          - lambda
+          - aks
+          - system
+        override: true
+        timeout: 10s
+
+    exporters:
+      splunk_hec/mezmo:
+        endpoint: "https://pipeline.use.dev.logdna.net/v1/9b4b7992-8808-11ee-a6ea-e22a1cf4cd58"
+        token: "Ai2ZAuZf3VTop/983TrTYqLqRbg0r28aL+wecUT35+U="
+        source: "otel"
+        sourcetype: "otel"
+        index: "main"
+        max_content_length_metrics: 2097152
+        max_content_length_logs: 2097152
+        max_content_length_traces: 2097152
+
+    service:
+      pipelines:
+        logs:
+          processors:
+          - resourcedetection
+          exporters:
+            - splunk_hec/mezmo
+            - logging
