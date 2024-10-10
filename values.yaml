@@ -21,9 +21,9 @@ opentelemetry-collector:
 
     exporters:
       otlphttp/mezmologs:
-        endpoint: "https://pipeline.use.dev.logdna.net/v1/7dc8f6b0-9640-11ee-b8ab-c23f77faa515"
+        endpoint: "https://pipeline.use.dev.logdna.net/v1/<ROUTE_ID>"
         headers:
-          Authorization: "4mRilGKGt1t8drJrJPaM8ZA7QFrZxcphwab7EtcD2gE="
+          Authorization: "<KEY>"
 
     service:
       pipelines:
